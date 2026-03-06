@@ -1,1 +1,5 @@
-[![Preview](preview.png)](https://github.com/bellamy-dev/zod)
+# Zod Project
+
+## 🖼️ Preview
+
+[![Preview](preview.png)](https://bellamy-dev.github.io/zod/)
