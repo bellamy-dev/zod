@@ -1,1 +1,1 @@
-[![Preview](preview.png)](https://ton-pseudo.github.io/ton-repo/)
+[![Preview](preview.png)](https://github.com/bellamy-dev/zod)
