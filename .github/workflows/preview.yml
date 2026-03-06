@@ -21,8 +21,18 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Detect project root
+        id: detect
+        run: |
+          if [ -f "frontend/package.json" ]; then
+            echo "dir=frontend" >> $GITHUB_OUTPUT
+          else
+            echo "dir=." >> $GITHUB_OUTPUT
+          fi
+
       - name: Install & Build
         run: |
+          cd ${{ steps.detect.outputs.dir }}
           npm install
           npm run build
 
@@ -30,7 +40,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ${{ steps.detect.outputs.dir }}/dist
 
       - name: Install serve + Puppeteer
         run: |
@@ -39,7 +49,7 @@ jobs:
 
       - name: Take Screenshot
         run: |
-          serve -s dist -p 3000 &
+          serve -s ${{ steps.detect.outputs.dir }}/dist -p 3000 &
           sleep 5
           node -e "
           const puppeteer = require('puppeteer');
