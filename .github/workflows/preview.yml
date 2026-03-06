@@ -1,0 +1,55 @@
+name: Update README Preview
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install & Build
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Install serve + Puppeteer
+        run: |
+          npm install -g serve
+          npm install puppeteer
+
+      - name: Take Screenshot
+        run: |
+          serve -s frontend/dist -p 3000 &
+          sleep 5
+          node -e "
+          const puppeteer = require('puppeteer');
+          (async () => {
+            const browser = await puppeteer.launch({
+              args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+            const page = await browser.newPage();
+            await page.setViewport({ width: 1280, height: 720 });
+            await page.goto('http://localhost:3000', { waitUntil: 'networkidle0' });
+            await page.screenshot({ path: 'preview.png' });
+            await browser.close();
+          })();
+          "
+
+      - name: Push la preview
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 Update preview"
+          file_pattern: preview.png
