@@ -1,0 +1,28 @@
+/* style basique pour aligner les trucs */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+}
+
+/* les champs */
+input, select, textarea {
+  width: 100%;
+  padding: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 8px;
+}
