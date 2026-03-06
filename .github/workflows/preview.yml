@@ -60,11 +60,12 @@ jobs:
             const page = await browser.newPage();
             await page.setViewport({ width: 1280, height: 720 });
             await page.goto('http://localhost:3000', { waitUntil: 'networkidle2', timeout: 60000 });
-            await page.waitForTimeout(3000);
+            await new Promise(r => setTimeout(r, 3000));
             await page.screenshot({ path: 'preview.png' });
             await browser.close();
           })();
           "
+
 
       - name: Push la preview
         uses: stefanzweifel/git-auto-commit-action@v5
